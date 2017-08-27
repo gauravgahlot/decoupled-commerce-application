@@ -12,6 +12,10 @@ namespace Commerce.Client
             builder.RegisterType<CommerceManager>();
             builder.RegisterType<OrderRepository>().As<IOrderRepository>();
             builder.RegisterType<StoreRepository>().As<IStoreRepository>();
+            builder.RegisterType<CustomerValidator>().As<ICustomerValidator>();
+            builder.RegisterType<CreditCardProcessor>().As<IPaymentProcessor>();
+            builder.RegisterType<EmailNotifier>().As<ICustomerNotifier>();
+            builder.RegisterType<Logger>().As<ILogger>();
 
             return builder.Build();
         }

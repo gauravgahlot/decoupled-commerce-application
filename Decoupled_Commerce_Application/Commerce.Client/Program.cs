@@ -19,6 +19,8 @@ namespace Commerce.Client
                 var commerceManager = scope.Resolve<CommerceManager>();
                 commerceManager.ProcessOrder(order);
             }
+
+            System.Console.ReadKey();
         }
     }
 }
