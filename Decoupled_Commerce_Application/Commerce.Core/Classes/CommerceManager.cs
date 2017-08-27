@@ -1,4 +1,5 @@
-﻿using Commerce.Shared.Models;
+﻿using Commerce.Shared.Contracts;
+using Commerce.Shared.Models;
 using Commerce.Shared.Repositories;
 
 namespace Commerce.Core

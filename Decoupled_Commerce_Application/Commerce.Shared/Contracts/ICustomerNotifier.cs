@@ -1,4 +1,4 @@
-﻿namespace Commerce.Core
+﻿namespace Commerce.Shared.Contracts
 {
     public interface ICustomerNotifier
     {

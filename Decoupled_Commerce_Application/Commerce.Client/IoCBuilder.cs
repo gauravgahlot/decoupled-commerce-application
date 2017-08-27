@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Commerce.Core;
+using Commerce.Shared.Contracts;
 using Commerce.Shared.Repositories;
 
 namespace Commerce.Client
