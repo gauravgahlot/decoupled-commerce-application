@@ -47,7 +47,7 @@
     <Compile Include="Classes\CommerceManager.cs" />
     <Compile Include="Classes\CreditCardProcessor.cs" />
     <Compile Include="Classes\EmailNotifier.cs" />
-    <Compile Include="CustomerValidator.cs" />
+    <Compile Include="Classes\CustomerValidator.cs" />
     <Compile Include="Interfaces\ICustomerNotifier.cs" />
     <Compile Include="Interfaces\ICustomerValidator.cs" />
     <Compile Include="Interfaces\ILogger.cs" />
