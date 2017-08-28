@@ -5,6 +5,9 @@ namespace Commerce.Core
 {
     public class EmailNotifier : ICustomerNotifier
     {
+        public string FromAddress { get; set; }
+        public string SmtpServer { get; set; }
+
         public void NotifyCustomer(bool paymentSuccessful)
         {
             if (paymentSuccessful)

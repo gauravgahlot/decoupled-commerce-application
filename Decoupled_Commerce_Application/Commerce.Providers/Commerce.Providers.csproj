@@ -41,9 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CreditCardProcessor.cs" />
-    <Compile Include="CustomerValidator.cs" />
     <Compile Include="EmailNotifier.cs" />
-    <Compile Include="Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
