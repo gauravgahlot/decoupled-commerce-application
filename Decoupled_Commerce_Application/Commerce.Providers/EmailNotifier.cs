@@ -1,7 +1,7 @@
 ﻿using Commerce.Shared.Contracts;
 using System;
 
-namespace Commerce.Core
+namespace Commerce.Providers
 {
     public class EmailNotifier : ICustomerNotifier
     {
