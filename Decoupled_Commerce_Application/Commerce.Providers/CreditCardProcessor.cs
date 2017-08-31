@@ -1,7 +1,8 @@
-﻿using Commerce.Shared.Models;
+﻿using Commerce.Shared.Contracts;
+using Commerce.Shared.Models;
 using System;
 
-namespace Commerce.Core
+namespace Commerce.Providers
 {
     public class CreditCardProcessor : IPaymentProcessor
     {

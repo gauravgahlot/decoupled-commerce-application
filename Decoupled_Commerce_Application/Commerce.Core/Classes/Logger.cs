@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Commerce.Shared.Contracts;
+using System;
 
 namespace Commerce.Core
 {

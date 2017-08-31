@@ -1,5 +1,9 @@
-﻿using Commerce.Shared.Models;
+﻿using Commerce.Core.Configurations;
+using Commerce.Shared.Contracts;
+using Commerce.Shared.Models;
 using Commerce.Shared.Repositories;
+using System;
+using System.Configuration;
 
 namespace Commerce.Core
 {
@@ -13,13 +17,19 @@ namespace Commerce.Core
 
         public CommerceManager(IStoreRepository storeRepository,
             ICustomerValidator customerValidator,
-            IPaymentProcessor paymentProcessor,
-            ICustomerNotifier customerNotifier, ILogger logger)
+            ILogger logger)
         {
             _storeRepository = storeRepository;
             _customerValidator = customerValidator;
-            _paymentProcessor = paymentProcessor;
-            _customerNotifier = customerNotifier;
+            var config = ConfigurationManager.GetSection("commerceApp") 
+                as CommerceAppConfigurationSection;
+            if (config != null)
+            {
+                _paymentProcessor = Activator.CreateInstance(Type.GetType(config.PaymentProcessor.Type)) as IPaymentProcessor;
+                _customerNotifier = Activator.CreateInstance(Type.GetType(config.CustomerNotifier.Type)) as ICustomerNotifier;
+                _customerNotifier.FromAddress = config.CustomerNotifier.FromAddress;
+                _customerNotifier.SmtpServer = config.CustomerNotifier.SmtpServer;
+            }
             _logger = logger;
         }
 
@@ -35,6 +45,7 @@ namespace Commerce.Core
 
                     // processing the order payment
                     result = _paymentProcessor.ProcessPayment(order.PaymentDetails);
+
 
                     // notifying the customer for order status
                     _customerNotifier.NotifyCustomer(result);

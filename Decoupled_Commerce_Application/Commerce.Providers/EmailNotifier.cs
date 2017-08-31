@@ -1,9 +1,13 @@
-﻿using System;
+﻿using Commerce.Shared.Contracts;
+using System;
 
-namespace Commerce.Core
+namespace Commerce.Providers
 {
     public class EmailNotifier : ICustomerNotifier
     {
+        public string FromAddress { get; set; }
+        public string SmtpServer { get; set; }
+
         public void NotifyCustomer(bool paymentSuccessful)
         {
             if (paymentSuccessful)

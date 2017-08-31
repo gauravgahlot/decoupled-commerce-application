@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Commerce.Core;
+using Commerce.Shared.Contracts;
 using Commerce.Shared.Repositories;
 
 namespace Commerce.Client
@@ -13,8 +14,6 @@ namespace Commerce.Client
             builder.RegisterType<OrderRepository>().As<IOrderRepository>();
             builder.RegisterType<StoreRepository>().As<IStoreRepository>();
             builder.RegisterType<CustomerValidator>().As<ICustomerValidator>();
-            builder.RegisterType<CreditCardProcessor>().As<IPaymentProcessor>();
-            builder.RegisterType<EmailNotifier>().As<ICustomerNotifier>();
             builder.RegisterType<Logger>().As<ILogger>();
 
             return builder.Build();

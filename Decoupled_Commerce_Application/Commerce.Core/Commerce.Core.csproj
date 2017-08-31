@@ -35,6 +35,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -45,14 +46,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\CommerceManager.cs" />
-    <Compile Include="Classes\CreditCardProcessor.cs" />
-    <Compile Include="Classes\EmailNotifier.cs" />
     <Compile Include="Classes\CustomerValidator.cs" />
-    <Compile Include="Interfaces\ICustomerNotifier.cs" />
-    <Compile Include="Interfaces\ICustomerValidator.cs" />
-    <Compile Include="Interfaces\ILogger.cs" />
-    <Compile Include="Interfaces\IPaymentProcessor.cs" />
     <Compile Include="Classes\Logger.cs" />
+    <Compile Include="Configurations\CommerceAppConfigurationSection.cs" />
+    <Compile Include="Configurations\CommerceAppElement.cs" />
+    <Compile Include="Configurations\CustomerNotifierElement.cs" />
+    <Compile Include="Configurations\PaymentProcessorElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
