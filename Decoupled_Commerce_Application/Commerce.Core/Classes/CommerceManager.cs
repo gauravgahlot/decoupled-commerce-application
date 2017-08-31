@@ -21,21 +21,29 @@ namespace Commerce.Core
         {
             _storeRepository = storeRepository;
             _customerValidator = customerValidator;
-            var config = ConfigurationManager.GetSection("commerceApp") 
-                as CommerceAppConfigurationSection;
-            if (config != null)
+            _logger = logger;
+
+            var config = ConfigurationManager.GetSection("commerceApp") as CommerceAppConfigurationSection;
+            if (config?.PaymentProcessor.Type != null &&
+                config.CustomerNotifier.Type != null)
             {
                 _paymentProcessor = Activator.CreateInstance(Type.GetType(config.PaymentProcessor.Type)) as IPaymentProcessor;
                 _customerNotifier = Activator.CreateInstance(Type.GetType(config.CustomerNotifier.Type)) as ICustomerNotifier;
-                _customerNotifier.FromAddress = config.CustomerNotifier.FromAddress;
-                _customerNotifier.SmtpServer = config.CustomerNotifier.SmtpServer;
+                if (_customerNotifier != null)
+                {
+                    _customerNotifier.FromAddress = config.CustomerNotifier.FromAddress;
+                    _customerNotifier.SmtpServer = config.CustomerNotifier.SmtpServer;
+                }
             }
-            _logger = logger;
+            else
+            {
+                _logger.Log("Incorrect configurations in App.config.");
+            }
         }
 
         public bool ProcessOrder(Order order)
         {
-            var result = false;
+            var paymentSuccessfull = false;
             if (_customerValidator.ValidateCustomer(order.Customer))
             {
                 foreach(var lineItem in order.LineItems)
@@ -44,14 +52,17 @@ namespace Commerce.Core
                     _storeRepository.UpdateInventoryForProduct(lineItem.Id, lineItem.Quantity);
 
                     // processing the order payment
-                    result = _paymentProcessor.ProcessPayment(order.PaymentDetails);
-
-
-                    // notifying the customer for order status
-                    _customerNotifier.NotifyCustomer(result);
+                    paymentSuccessfull = _paymentProcessor.ProcessPayment(order.PaymentDetails);
                 }
+
+                // log if order processing fails
+                if(!paymentSuccessfull)
+                    _logger.Log($"Order with Order_Id: {order.Id} could not be placed.");
+
+                // notifying the customer for order status
+                _customerNotifier.NotifyCustomer(paymentSuccessfull);
             }
-            return result;
+            return paymentSuccessfull;
         }
     }
 }
