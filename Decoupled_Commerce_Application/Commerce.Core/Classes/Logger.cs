@@ -7,7 +7,7 @@ namespace Commerce.Core
     {
         public void Log(string message)
         {
-            Console.WriteLine("Logging errors...");
+            Console.WriteLine($"{message} Timestamp: {DateTime.Now}.");
         }
     }
 }
