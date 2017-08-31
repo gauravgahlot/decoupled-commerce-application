@@ -10,9 +10,11 @@ namespace Commerce.Client
         internal static IContainer Build()
         {
             var builder =  new ContainerBuilder();
+
             builder.RegisterType<CommerceManager>();
             builder.RegisterType<OrderRepository>().As<IOrderRepository>();
             builder.RegisterType<StoreRepository>().As<IStoreRepository>();
+            builder.RegisterType<ConfigurationProviderFactory>().As<IConfigurationProviderFactory>();
             builder.RegisterType<CustomerValidator>().As<ICustomerValidator>();
             builder.RegisterType<Logger>().As<ILogger>();
 
