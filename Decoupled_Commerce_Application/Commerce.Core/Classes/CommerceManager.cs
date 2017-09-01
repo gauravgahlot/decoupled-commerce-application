@@ -1,9 +1,6 @@
-﻿using Commerce.Core.Configurations;
-using Commerce.Shared.Contracts;
+﻿using Commerce.Shared.Contracts;
 using Commerce.Shared.Models;
 using Commerce.Shared.Repositories;
-using System;
-using System.Configuration;
 
 namespace Commerce.Core
 {
@@ -16,29 +13,15 @@ namespace Commerce.Core
         private readonly ILogger _logger;
 
         public CommerceManager(IStoreRepository storeRepository,
+            IConfigurationProviderFactory configFactory,
             ICustomerValidator customerValidator,
             ILogger logger)
         {
             _storeRepository = storeRepository;
+            _paymentProcessor = configFactory.GetPaymentProcessor();
+            _customerNotifier = configFactory.GetCustomerNotifier();
             _customerValidator = customerValidator;
             _logger = logger;
-
-            var config = ConfigurationManager.GetSection("commerceApp") as CommerceAppConfigurationSection;
-            if (config?.PaymentProcessor.Type != null &&
-                config.CustomerNotifier.Type != null)
-            {
-                _paymentProcessor = Activator.CreateInstance(Type.GetType(config.PaymentProcessor.Type)) as IPaymentProcessor;
-                _customerNotifier = Activator.CreateInstance(Type.GetType(config.CustomerNotifier.Type)) as ICustomerNotifier;
-                if (_customerNotifier != null)
-                {
-                    _customerNotifier.FromAddress = config.CustomerNotifier.FromAddress;
-                    _customerNotifier.SmtpServer = config.CustomerNotifier.SmtpServer;
-                }
-            }
-            else
-            {
-                _logger.Log("Incorrect configurations in App.config.");
-            }
         }
 
         public bool ProcessOrder(Order order)
