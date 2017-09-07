@@ -26,7 +26,7 @@ namespace Commerce.Core
 
         public bool ProcessOrder(Order order)
         {
-            var paymentSuccessfull = false;
+            var paymentStatus = false;
             if (_customerValidator.ValidateCustomer(order.Customer))
             {
                 foreach(var lineItem in order.LineItems)
@@ -35,17 +35,17 @@ namespace Commerce.Core
                     _storeRepository.UpdateInventoryForProduct(lineItem.Id, lineItem.Quantity);
 
                     // processing the order payment
-                    paymentSuccessfull = _paymentProcessor.ProcessPayment(order.PaymentDetails);
+                    paymentStatus = _paymentProcessor.ProcessPayment(order.PaymentDetails);
                 }
 
                 // log if order processing fails
-                if(!paymentSuccessfull)
+                if(!paymentStatus)
                     _logger.Log($"Order with Order_Id: {order.Id} could not be placed.");
 
                 // notifying the customer for order status
-                _customerNotifier.NotifyCustomer(paymentSuccessfull);
+                _customerNotifier.NotifyCustomer(paymentStatus);
             }
-            return paymentSuccessfull;
+            return paymentStatus;
         }
     }
 }
