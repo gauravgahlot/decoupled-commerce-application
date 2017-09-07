@@ -1,4 +1,5 @@
 ﻿using Commerce.Shared.Contracts;
+using Commerce.Shared.ExtensionPoints;
 using Commerce.Shared.Models;
 using Commerce.Shared.Repositories;
 
@@ -11,6 +12,7 @@ namespace Commerce.Core
         private readonly IPaymentProcessor _paymentProcessor;
         private readonly ICustomerNotifier _customerNotifier;
         private readonly ILogger _logger;
+        private readonly ICommerceAppEvents _events;
 
         public CommerceManager(IStoreRepository storeRepository,
             IConfigurationProviderFactory configFactory,
@@ -20,6 +22,7 @@ namespace Commerce.Core
             _storeRepository = storeRepository;
             _paymentProcessor = configFactory.GetPaymentProcessor();
             _customerNotifier = configFactory.GetCustomerNotifier();
+            _events = configFactory.GetEvents();
             _customerValidator = customerValidator;
             _logger = logger;
         }
@@ -31,6 +34,18 @@ namespace Commerce.Core
             {
                 foreach(var lineItem in order.LineItems)
                 {
+                    // raise event to check for product promotions
+                    if(_events.OrderItemProcessed != null)
+                    {
+                        var args = new OrderItemProcessedEventArgs { LineItem = lineItem };
+                        _events.OrderItemProcessed(args);
+
+                        if (args.Cancel)
+                        {
+                            return paymentStatus;
+                        }
+                    }
+
                     // updating store inventory
                     _storeRepository.UpdateInventoryForProduct(lineItem.Id, lineItem.Quantity);
 

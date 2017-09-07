@@ -64,6 +64,10 @@
       <Project>{b76e1312-59b3-4fac-b16f-0ddd2602e10f}</Project>
       <Name>Commerce.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Commerce.Modules\Commerce.Modules.csproj">
+      <Project>{616d53aa-76dd-48a9-b7bb-a810db93ce73}</Project>
+      <Name>Commerce.Modules</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Commerce.Providers\Commerce.Providers.csproj">
       <Project>{1e1a6a7b-7ef7-4686-b841-0840e71c8204}</Project>
       <Name>Commerce.Providers</Name>
