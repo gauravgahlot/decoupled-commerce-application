@@ -4,6 +4,6 @@ namespace Commerce.Shared.Contracts
 {
     public interface ICommerceModule
     {
-        void Initialize(CommerceAppExtensionPoints extensions);
+        void Initialize(ICommerceAppEvents extensions);
     }
 }
