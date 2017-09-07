@@ -17,5 +17,12 @@ namespace Commerce.Core.Configurations
             get { return (CustomerNotifierElement)base["customerNotifier"]; }
             set { base["customerNotifier"] = value; }
         }
+
+        [ConfigurationProperty("modules", IsRequired = true)]
+        public CommerceAppModules Modules
+        {
+            get { return (CommerceAppModules)base["modules"]; }
+            set { base["modules"] = value; }
+        }
     }
 }
