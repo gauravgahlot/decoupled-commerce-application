@@ -51,6 +51,8 @@
     <Compile Include="Classes\ConfigurationProviderFactory.cs" />
     <Compile Include="Configurations\CommerceAppConfigurationSection.cs" />
     <Compile Include="Configurations\CommerceAppElement.cs" />
+    <Compile Include="Configurations\CommerceAppModuleElement.cs" />
+    <Compile Include="Configurations\CommerceAppModules.cs" />
     <Compile Include="Configurations\CustomerNotifierElement.cs" />
     <Compile Include="Configurations\PaymentProcessorElement.cs" />
     <Compile Include="Interfaces\IConfigurationProviderFactory.cs" />

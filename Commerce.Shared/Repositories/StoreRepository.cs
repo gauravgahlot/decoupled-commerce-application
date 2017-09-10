@@ -13,10 +13,10 @@ namespace Commerce.Shared.Repositories
             InitializeInventory();
         }
 
-        public void UpdateInventoryForProduct(int productId, int quanitySold)
+        public void UpdateInventoryForProduct(Product lineItem)
         {
-            System.Console.WriteLine("Updating inventory...");
-            _products.First(p => p.Id == productId).Quantity -= quanitySold;
+            System.Console.WriteLine($"Updating inventory for Product ID:{lineItem.Id} and Unit Price: ${lineItem.UnitPrice}");
+            _products.First(p => p.Id == lineItem.Id).Quantity -= lineItem.Quantity;
         }
 
         private void InitializeInventory()

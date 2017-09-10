@@ -1,7 +1,9 @@
-﻿namespace Commerce.Shared.Repositories
+﻿using Commerce.Shared.Models;
+
+namespace Commerce.Shared.Repositories
 {
     public interface IStoreRepository
     {
-        void UpdateInventoryForProduct(int productId, int quanitySold);
+        void UpdateInventoryForProduct(Product lineItem);
     }
 }

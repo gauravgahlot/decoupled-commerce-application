@@ -1,4 +1,5 @@
 ﻿using Commerce.Shared.Contracts;
+using Commerce.Shared.ExtensionPoints;
 using Commerce.Shared.Models;
 using Commerce.Shared.Repositories;
 
@@ -11,6 +12,7 @@ namespace Commerce.Core
         private readonly IPaymentProcessor _paymentProcessor;
         private readonly ICustomerNotifier _customerNotifier;
         private readonly ILogger _logger;
+        private readonly ICommerceAppEvents _events;
 
         public CommerceManager(IStoreRepository storeRepository,
             IConfigurationProviderFactory configFactory,
@@ -20,32 +22,45 @@ namespace Commerce.Core
             _storeRepository = storeRepository;
             _paymentProcessor = configFactory.GetPaymentProcessor();
             _customerNotifier = configFactory.GetCustomerNotifier();
+            _events = configFactory.GetEvents();
             _customerValidator = customerValidator;
             _logger = logger;
         }
 
         public bool ProcessOrder(Order order)
         {
-            var paymentSuccessfull = false;
+            var paymentStatus = false;
             if (_customerValidator.ValidateCustomer(order.Customer))
             {
                 foreach(var lineItem in order.LineItems)
                 {
-                    // updating store inventory
-                    _storeRepository.UpdateInventoryForProduct(lineItem.Id, lineItem.Quantity);
+                    // raise event to check for product promotions
+                    if(_events.OrderItemProcessed != null)
+                    {
+                        var args = new OrderItemProcessedEventArgs { LineItem = lineItem };
+                        _events.OrderItemProcessed(args);
 
-                    // processing the order payment
-                    paymentSuccessfull = _paymentProcessor.ProcessPayment(order.PaymentDetails);
+                        if (args.Cancel)
+                        {
+                            return paymentStatus;
+                        }
+                    }
+
+                    // updating store inventory
+                    _storeRepository.UpdateInventoryForProduct(lineItem);
                 }
 
+                // processing the order payment
+                paymentStatus = _paymentProcessor.ProcessPayment(order.PaymentDetails);
+
                 // log if order processing fails
-                if(!paymentSuccessfull)
+                if (!paymentStatus)
                     _logger.Log($"Order with Order_Id: {order.Id} could not be placed.");
 
                 // notifying the customer for order status
-                _customerNotifier.NotifyCustomer(paymentSuccessfull);
+                _customerNotifier.NotifyCustomer(paymentStatus);
             }
-            return paymentSuccessfull;
+            return paymentStatus;
         }
     }
 }

@@ -40,10 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\ICommerceModule.cs" />
     <Compile Include="Contracts\ICustomerNotifier.cs" />
     <Compile Include="Contracts\ICustomerValidator.cs" />
     <Compile Include="Contracts\ILogger.cs" />
     <Compile Include="Contracts\IPaymentProcessor.cs" />
+    <Compile Include="ExtensionPoints\CommerceAppExtensionPoints.cs" />
+    <Compile Include="ExtensionPoints\OrderItemProcessedEventArgs.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\Product.cs" />

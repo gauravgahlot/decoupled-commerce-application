@@ -1,4 +1,5 @@
 ﻿using Commerce.Shared.Contracts;
+using Commerce.Shared.ExtensionPoints;
 
 namespace Commerce.Core
 {
@@ -6,5 +7,6 @@ namespace Commerce.Core
     {
         IPaymentProcessor GetPaymentProcessor();
         ICustomerNotifier GetCustomerNotifier();
+        ICommerceAppEvents GetEvents();
     }
 }
