@@ -3,4 +3,5 @@
 Decoupling the commerce application using: 
  - Configurations 
  - Providers
- - Modules
+ - Extension Points
+ - Modules encashing those extension points
