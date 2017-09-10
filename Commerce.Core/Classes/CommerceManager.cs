@@ -47,14 +47,14 @@ namespace Commerce.Core
                     }
 
                     // updating store inventory
-                    _storeRepository.UpdateInventoryForProduct(lineItem.Id, lineItem.Quantity);
-
-                    // processing the order payment
-                    paymentStatus = _paymentProcessor.ProcessPayment(order.PaymentDetails);
+                    _storeRepository.UpdateInventoryForProduct(lineItem);
                 }
 
+                // processing the order payment
+                paymentStatus = _paymentProcessor.ProcessPayment(order.PaymentDetails);
+
                 // log if order processing fails
-                if(!paymentStatus)
+                if (!paymentStatus)
                     _logger.Log($"Order with Order_Id: {order.Id} could not be placed.");
 
                 // notifying the customer for order status
